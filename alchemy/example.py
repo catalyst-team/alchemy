@@ -6,7 +6,7 @@ token = '...'
 
 for gid in range(3):
     for eid in range(5):
-        for mid in range(100):
+        for mid in range(10):
             metric = f'metric_{mid}'
             group = f'group_{gid}'
             experiment = f'experiment_{eid}'

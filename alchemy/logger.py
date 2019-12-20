@@ -9,16 +9,16 @@ class Logger:
     _url = 'https://alchemy.host/api/log'
 
     def __init__(
-            self,
-            token: str,
-            experiment_name: str,
-            group_name: str = 'defult',
-            batch_size: int = 1000,
+        self,
+        token: str,
+        experiment: str,
+        group: str = None,
+        batch_size: int = None,
     ):
         self._token = token
-        self._experiment_name = experiment_name
-        self._group_name = group_name
-        self._batch_size = batch_size
+        self._experiment = experiment
+        self._group = group or 'default'
+        self._batch_size = batch_size or int(1e3)
         self._counters = dict()
         self._queue = queue.Queue()
         self._thread = threading.Thread(target=self._run_worker)
@@ -51,14 +51,14 @@ class Logger:
         self._thread.join()
 
     def log_scalar(
-            self,
-            name: str,
-            value: Union[int, float],
+        self,
+        name: str,
+        value: Union[int, float],
     ):
         step = self._counters.get('log_scalar', 0)
         self._queue.put(dict(
-            group=self._group_name,
-            experiment=self._experiment_name,
+            group=self._group,
+            experiment=self._experiment,
             type='log_scalar',
             name=name,
             value=value,
