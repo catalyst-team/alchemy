@@ -13,7 +13,7 @@ from setuptools import find_packages, setup, Command
 
 # Package meta-data.
 NAME = "alchemy-catalyst"
-DESCRIPTION = "Alchemy. ML logging & visualization."
+DESCRIPTION = "Alchemy. Experiments logging & visualization."
 URL = "https://github.com/catalyst-team/alchemy"
 EMAIL = "dkuryakin@gmail.com"
 AUTHOR = "David Kuryakin"

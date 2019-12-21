@@ -6,7 +6,7 @@ import requests
 
 
 class Logger:
-    _url = 'https://alchemy.host/api/log'
+    _url = "https://alchemy.host/api/log"
 
     def __init__(
         self,
@@ -17,7 +17,7 @@ class Logger:
     ):
         self._token = token
         self._experiment = experiment
-        self._group = group or 'default'
+        self._group = group or "default"
         self._batch_size = batch_size or int(1e3)
         self._counters = dict()
         self._queue = queue.Queue()
@@ -25,7 +25,7 @@ class Logger:
         self._thread.start()
 
     def _run_worker(self):
-        headers = {'X-Token': self._token}
+        headers = {"X-Token": self._token}
         running = True
         while running:
             batch = []
@@ -55,13 +55,13 @@ class Logger:
         name: str,
         value: Union[int, float],
     ):
-        step = self._counters.get('log_scalar', 0)
+        step = self._counters.get("log_scalar", 0)
         self._queue.put(dict(
             group=self._group,
             experiment=self._experiment,
-            type='log_scalar',
+            type="log_scalar",
             name=name,
             value=value,
             step=step,
         ))
-        self._counters['log_scalar'] = step + 1
+        self._counters["log_scalar"] = step + 1
