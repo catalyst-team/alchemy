@@ -11,6 +11,8 @@
 **Alchemy**. Experiments logging & visualization.
 </div>
 
+Part of [Catalyst Ecosystem](https://docs.google.com/presentation/d/1D-yhVOg6OXzjo9K_-IS5vSHLPIUxp1PEkFGnpRcNCNU/edit?usp=sharing).
+
 #### Installation
 
 Common installation:
