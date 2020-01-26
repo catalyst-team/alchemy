@@ -4,7 +4,7 @@
 
 **Experiments logging & visualization**
 
-[![Build Status](https://travis-ci.com/catalyst-team/alchemy.svg?branch=master)](https://travis-ci.com/catalyst-team/alchemy)(http://66.248.205.49:8111/project.html?projectId=Catalyst&tab=projectOverview&guest=1)
+[![Build Status](https://travis-ci.com/catalyst-team/alchemy.svg?branch=master)](https://travis-ci.com/catalyst-team/alchemy)
 [![Pipi version](https://img.shields.io/pypi/v/alchemy-catalyst.svg)](https://pypi.org/project/alchemy-catalyst/)
 [![Docs](https://img.shields.io/badge/dynamic/json.svg?label=docs&url=https%3A%2F%2Fpypi.org%2Fpypi%2Falchemy-catalyst%2Fjson&query=%24.info.version&colorB=brightgreen&prefix=v)](https://catalyst-team.github.io/alchemy-catalyst/index.html)
 [![PyPI Status](https://pepy.tech/badge/alchemy-catalyst)](https://pepy.tech/project/alchemy-catalyst)
