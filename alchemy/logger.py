@@ -7,21 +7,21 @@ import requests
 
 
 class Logger:
-    _url = 'https://alchemy.host/api/log'
+    _url = "https://alchemy.host/api/log"
 
     def __init__(
             self,
-            api_token: str,
-            experiment_name: str,
-            group_name: str = 'default',
-            project_name: str = 'default',
-            batch_size: int = 1000,
+            token: str,
+            experiment: str,
+            group: str = None,
+            project: str = None,
+            batch_size: int = None,
     ):
-        self._api_token = api_token
-        self._experiment_name = experiment_name
-        self._group_name = group_name
-        self._project_name = project_name
-        self._batch_size = batch_size
+        self._token = token
+        self._experiment = experiment
+        self._group = group or "default"
+        self._project = project or "default"
+        self._batch_size = batch_size or int(1e3)
         self._counters = Counter()
         self._queue = queue.Queue()
         self._thread = threading.Thread(target=self._run_worker)
@@ -29,10 +29,10 @@ class Logger:
 
     def _run_worker(self):
         headers = {
-            'X-Token': self._api_token,
-            'X-Project': self._project_name,
-            'X-Group': self._group_name,
-            'X-Experiment': self._experiment_name,
+            'X-Token': self._token,
+            'X-Project': self._project,
+            'X-Group': self._group,
+            'X-Experiment': self._experiment,
         }
         running = True
         while running:

@@ -2,14 +2,14 @@ import random
 
 from alchemy import Logger
 
-token = '...'
+token = "..."
 
-for gid in range(3):
-    for eid in range(5):
-        for mid in range(10):
-            metric = f'metric_{mid}'
-            group = f'group_{gid}'
-            experiment = f'experiment_{eid}'
+for gid in range(1):
+    for eid in range(2):
+        for mid in range(3):
+            metric = f"metric_{mid}"
+            group = f"group_{gid}"
+            experiment = f"experiment_{eid}"
 
             logger = Logger(token, experiment, group)
 

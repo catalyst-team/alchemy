@@ -12,8 +12,8 @@ from shutil import rmtree
 from setuptools import find_packages, setup, Command
 
 # Package meta-data.
-NAME = "alchemy"
-DESCRIPTION = "Alchemy. ML logging & visualization."
+NAME = "alchemy-catalyst"
+DESCRIPTION = "Alchemy. Experiments logging & visualization."
 URL = "https://github.com/catalyst-team/alchemy"
 EMAIL = "dkuryakin@gmail.com"
 AUTHOR = "David Kuryakin"
