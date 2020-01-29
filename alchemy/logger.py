@@ -1,5 +1,6 @@
 import queue
 import threading
+from collections import Counter
 from typing import Union
 
 import requests
@@ -10,22 +11,29 @@ class Logger:
 
     def __init__(
             self,
-            token: str,
+            api_token: str,
             experiment_name: str,
-            group_name: str = 'defult',
+            group_name: str = 'default',
+            project_name: str = 'default',
             batch_size: int = 1000,
     ):
-        self._token = token
+        self._api_token = api_token
         self._experiment_name = experiment_name
         self._group_name = group_name
+        self._project_name = project_name
         self._batch_size = batch_size
-        self._counters = dict()
+        self._counters = Counter()
         self._queue = queue.Queue()
         self._thread = threading.Thread(target=self._run_worker)
         self._thread.start()
 
     def _run_worker(self):
-        headers = {'X-Token': self._token}
+        headers = {
+            'X-Token': self._api_token,
+            'X-Project': self._project_name,
+            'X-Group': self._group_name,
+            'X-Experiment': self._experiment_name,
+        }
         running = True
         while running:
             batch = []
@@ -55,13 +63,9 @@ class Logger:
             name: str,
             value: Union[int, float],
     ):
-        step = self._counters.get('log_scalar', 0)
         self._queue.put(dict(
-            group=self._group_name,
-            experiment=self._experiment_name,
-            type='log_scalar',
             name=name,
             value=value,
-            step=step,
+            step=self._counters[name],
         ))
-        self._counters['log_scalar'] = step + 1
+        self._counters[name] += 1
