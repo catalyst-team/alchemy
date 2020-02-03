@@ -7,7 +7,7 @@ import requests
 
 
 class Logger:
-    _url = "https://alchemy.host/api/log"
+    _url = "https://log.alchemy.host"
 
     def __init__(
             self,

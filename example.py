@@ -14,8 +14,8 @@ for gid in range(1):
             logger = Logger(token, experiment, group)
 
             n = 300
-            x = random.randint(-10, 10)
+            x = random.random() + 0.001
             for i in range(n):
                 logger.log_scalar(metric, x)
-                x += random.randint(-1, 1)
+                x += random.random()
             logger.close()
