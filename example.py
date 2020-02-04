@@ -3,19 +3,20 @@ import random
 from alchemy import Logger
 
 token = "..."
+project = 'my-project'
 
 for gid in range(1):
     for eid in range(2):
         for mid in range(3):
-            metric = f"metric_{mid}"
-            group = f"group_{gid}"
-            experiment = f"experiment_{eid}"
+            metric = f"metric-{mid}"
+            group = f"group-{gid}"
+            experiment = f"experiment-{eid}"
 
-            logger = Logger(token, experiment, group)
+            logger = Logger(token, experiment, group, project=project)
 
             n = 300
-            x = random.random() + 0.001
+            x = random.random() * 20
             for i in range(n):
                 logger.log_scalar(metric, x)
-                x += random.random()
+                x += random.random() * 2 - 1.01
             logger.close()

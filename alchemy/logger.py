@@ -6,7 +6,7 @@ from typing import Union
 
 import requests
 
-VALID_MASK = r'^[a-zA-Z0-9_]{3,}$'
+VALID_MASK = r'^[a-zA-Z0-9_\-]{3,32}$'
 VALID_RE = re.compile(VALID_MASK)
 
 
