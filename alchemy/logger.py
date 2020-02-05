@@ -9,11 +9,20 @@ import requests
 VALID_MASK = r'^[a-zA-Z0-9_\-]{3,32}$'
 VALID_RE = re.compile(VALID_MASK)
 
+VALID_METRIC_MASK = r'^[a-zA-Z0-9_\-/]{3,32}$'
+VALID_METRIC_RE = re.compile(VALID_METRIC_MASK)
+
 
 def validate(name: str, reason: str, error_type: type = ValueError):
     if VALID_RE.match(name):
         return name
     raise error_type(f'{reason} (no match: {VALID_MASK})')
+
+
+def validate_metric(name: str, reason: str, error_type: type = ValueError):
+    if VALID_METRIC_RE.match(name):
+        return name
+    raise error_type(f'{reason} (no match: {VALID_METRIC_MASK})')
 
 
 class Logger:
@@ -76,7 +85,7 @@ class Logger:
             value: Union[int, float],
     ):
         self._queue.put(dict(
-            name=validate(name, f'invalid metric name: {name}'),
+            name=validate_metric(name, f'invalid metric name: {name}'),
             value=value,
             step=self._counters[name],
         ))
