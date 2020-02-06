@@ -21,7 +21,7 @@ def validate(name: str, reason: str, error_type: type = ValueError):
 
 
 def validate_metric(name: str, reason: str, error_type: type = ValueError):
-    name = unicodedata.normalize(name)
+    name = unicodedata.normalize('NFKC', name)
     if VALID_METRIC_RE.match(name):
         return name
     raise error_type(f'{reason} (no match: {VALID_METRIC_MASK})')
