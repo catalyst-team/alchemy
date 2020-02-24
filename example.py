@@ -3,7 +3,7 @@ import random
 from alchemy import Logger
 
 token = "..."
-project = 'my-project'
+project = "my-project"
 
 for gid in range(1):
     for eid in range(2):
