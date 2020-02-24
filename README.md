@@ -35,29 +35,63 @@ pip install -U alchemy-catalyst
 2. Run following **example.py**:
     ```python
     import random
-
+    
     from alchemy import Logger
-
-    token = "..."  # insert your personal token here
-
+    
+    # insert your personal token here
+    token = "..."
+    project = "default"
+    
     for gid in range(1):
+        group = f"group_{gid}"
         for eid in range(2):
-            for mid in range(3):
+            experiment = f"experiment_{eid}"
+            logger = Logger(
+                token=token,
+                experiment=experiment,
+                group=group,
+                project=project,
+            )
+            for mid in range(4):
                 metric = f"metric_{mid}"
-                group = f"group_{gid}"
-                experiment = f"experiment_{eid}"
-
-                logger = Logger(token, experiment, group)
-
+                # let's sample some random data
                 n = 300
                 x = random.randint(-10, 10)
                 for i in range(n):
                     logger.log_scalar(metric, x)
                     x += random.randint(-1, 1)
-                logger.close()
+            logger.close()
     ```
 3. Now you should see your metrics on [Alchemy](https://alchemy.host/).
 
-## Example
+
+## Catalyst.Ecosystem
+
+1. Goto [Alchemy](https://alchemy.host/) and get your personal token.
+
+2. Log your Catalyst experiment with **AlchemyRunner**:
+    ```python
+    from catalyst.dl import SupervisedAlchemyRunner
+    runner = SupervisedAlchemyRunner()
+    
+    runner.train(
+        model=model,
+        criterion=criterion,
+        optimizer=optimizer,
+        loaders=loaders,
+        logdir=logdir,
+        num_epochs=num_epochs,
+        verbose=True,
+        monitoring_params={
+            "token": "...",  # insert your personal token here
+            "project": "default",
+            "experiment": "your_experiment_name",
+            "group": "your_experiment_group_name",
+        }
+    )
+    ```
+3. Now you should see your metrics on [Alchemy](https://alchemy.host/).
+
+## Examples
 
 For mode detailed tutorials, please follow [Catalyst examples](https://github.com/catalyst-team/catalyst/tree/master/examples#tutorials).
