@@ -2,21 +2,26 @@ import random
 
 from alchemy import Logger
 
+# insert your personal token here
 token = "..."
-project = "my-project"
+project = "default"
 
 for gid in range(1):
+    group = f"group_{gid}"
     for eid in range(2):
-        for mid in range(3):
-            metric = f"metric-{mid}"
-            group = f"group-{gid}"
-            experiment = f"experiment-{eid}"
-
-            logger = Logger(token, experiment, group, project=project)
-
+        experiment = f"experiment_{eid}"
+        logger = Logger(
+            token=token,
+            experiment=experiment,
+            group=group,
+            project=project,
+        )
+        for mid in range(4):
+            metric = f"metric_{mid}"
+            # let's sample some random data
             n = 300
-            x = random.random() * 20
+            x = random.randint(-10, 10)
             for i in range(n):
                 logger.log_scalar(metric, x)
-                x += random.random() * 2 - 1.01
-            logger.close()
+                x += random.randint(-1, 1)
+        logger.close()
