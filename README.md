@@ -4,7 +4,7 @@
 
 **Experiments logging & visualization**
 
-[![Build Status](https://github.com/catalyst-team/alchemy/workflows/CI/badge.svg)
+![Build Status](https://github.com/catalyst-team/alchemy/workflows/CI/badge.svg)
 [![CodeFactor](https://www.codefactor.io/repository/github/catalyst-team/alchemy/badge)](https://www.codefactor.io/repository/github/catalyst-team/alchemy)
 [![Pipi version](https://img.shields.io/pypi/v/alchemy-catalyst.svg)](https://pypi.org/project/alchemy-catalyst/)
 [![Docs](https://img.shields.io/badge/dynamic/json.svg?label=docs&url=https%3A%2F%2Fpypi.org%2Fpypi%2Falchemy-catalyst%2Fjson&query=%24.info.version&colorB=brightgreen&prefix=v)](https://catalyst-team.github.io/alchemy-catalyst/index.html)
