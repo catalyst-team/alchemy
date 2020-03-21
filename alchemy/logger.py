@@ -87,12 +87,13 @@ class Logger:
         self,
         name: str,
         value: Union[int, float],
+        step: int = None,
     ):
         self._queue.put(
             dict(
                 name=validate_metric(name, f"invalid metric name: {name}"),
                 value=value,
-                step=self._counters[name],
+                step=step or self._counters[name],
             )
         )
         self._counters[name] += 1
