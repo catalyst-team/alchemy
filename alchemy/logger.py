@@ -1,8 +1,8 @@
+from typing import Union
 from collections import Counter
 import queue
 import re
 import threading
-from typing import Union
 import unicodedata
 
 import requests
@@ -84,16 +84,13 @@ class Logger:
         self._thread.join()
 
     def log_scalar(
-        self,
-        name: str,
-        value: Union[int, float],
-        step: int = None,
+        self, name: str, value: Union[int, float], step: int = None,
     ):
         self._queue.put(
-            dict(
-                name=validate_metric(name, f"invalid metric name: {name}"),
-                value=value,
-                step=step or self._counters[name],
-            )
+            {
+                "name": validate_metric(name, f"invalid metric name: {name}"),
+                "value": value,
+                "step": (step or self._counters[name]),
+            }
         )
         self._counters[name] += 1
