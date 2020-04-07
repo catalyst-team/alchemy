@@ -11,11 +11,11 @@ import sys
 from setuptools import Command, find_packages, setup
 
 # Package meta-data.
-NAME = "alchemy-catalyst"
+NAME = "alchemy"
 DESCRIPTION = "Alchemy. Experiments logging & visualization."
 URL = "https://github.com/catalyst-team/alchemy"
-EMAIL = "dkuryakin@gmail.com"
-AUTHOR = "David Kuryakin"
+EMAIL = "scitator@gmail.com"
+AUTHOR = "Sergey Kolesnikov"
 REQUIRES_PYTHON = ">=3.5.0"
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
