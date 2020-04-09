@@ -31,6 +31,8 @@ Common installation:
 pip install -U alchemy
 ```
 
+Previous name `alchemy-catalyst` [![PyPI Status](https://pepy.tech/badge/alchemy-catalyst)](https://pepy.tech/project/alchemy-catalyst)
+
 ## Getting started
 
 1. Goto [Alchemy](https://alchemy.host/) and get your personal token.
