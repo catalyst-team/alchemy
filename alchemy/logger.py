@@ -4,6 +4,7 @@ import queue
 import re
 import threading
 import unicodedata
+import time
 
 import requests
 
@@ -75,7 +76,12 @@ class Logger:
             except queue.Empty:
                 pass
             if batch:
-                requests.post(self._url, json=batch, headers=headers)
+                while True:
+                    try:
+                        requests.post(self._url, json=batch, headers=headers)
+                        break
+                    except:
+                        time.sleep(1)
 
     def close(self):
         if not self._thread.is_alive():
