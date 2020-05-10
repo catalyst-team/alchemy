@@ -63,7 +63,7 @@ class Logger:
         return filename
 
     def _dump_batch(self):
-        if len(self._batch):
+        if self._batch:
             fn = str(self._batch_filename)
             dump_json(self._batch, fn + "_")
             os.rename(fn + "_", fn)
