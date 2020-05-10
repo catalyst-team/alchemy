@@ -1,6 +1,9 @@
+import logging
 import random
 
 from alchemy import Logger
+
+logging.basicConfig(level=logging.DEBUG)
 
 token = "..."
 project = 'my-project'

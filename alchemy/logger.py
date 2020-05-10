@@ -1,34 +1,16 @@
-import queue
-import re
-import threading
-import unicodedata
+import logging
+import os
+import uuid
 from collections import Counter
+from pathlib import Path
 from typing import Union
 
-import requests
-
-VALID_MASK = r'^[a-zA-Z0-9_\-]{3,64}$'
-VALID_RE = re.compile(VALID_MASK)
-
-VALID_METRIC_MASK = r'^[\w\-/]{3,64}$'
-VALID_METRIC_RE = re.compile(VALID_METRIC_MASK)
-
-
-def validate(name: str, reason: str, error_type: type = ValueError):
-    if VALID_RE.match(name):
-        return name
-    raise error_type(f'{reason} (no match: {VALID_MASK})')
-
-
-def validate_metric(name: str, reason: str, error_type: type = ValueError):
-    name = unicodedata.normalize('NFKC', name)
-    if VALID_METRIC_RE.match(name):
-        return name
-    raise error_type(f'{reason} (no match: {VALID_METRIC_MASK})')
+from .sender import Sender
+from .utils import validate, dump_json, validate_metric, BASE_LOGS_DIR
 
 
 class Logger:
-    _url = "https://log.alchemy.host"
+    _base_logs_dir = BASE_LOGS_DIR
 
     def __init__(
             self,
@@ -44,51 +26,56 @@ class Logger:
         self._group = validate(group, f'invalid group name: {group}')
         project = project or "default"
         self._project = validate(project, f'invalid project name: {project}')
+        self._logs_dir: Path = Path(self._base_logs_dir).expanduser().absolute() / str(uuid.uuid4())
         self._batch_size = max(int(batch_size or int(1e3)), 1)
         self._counters = Counter()
-        self._queue = queue.Queue()
-        self._thread = threading.Thread(target=self._run_worker)
-        self._thread.start()
+        self._batch = []
+        self._batch_no = 0
+        self._dump_headers()
+        self._dump_pid()
+        self._run_sender()
 
-    def _run_worker(self):
-        headers = {
+    def _run_sender(self):
+        Sender(self._logs_dir).run_daemon()
+
+    def _dump_pid(self):
+        dump_json({'pid': os.getpid()}, self._logs_dir / 'pid.json')
+
+    def _dump_headers(self):
+        dump_json({
             'X-Token': self._token,
             'X-Project': self._project,
             'X-Group': self._group,
             'X-Experiment': self._experiment,
-        }
-        running = True
-        while running:
-            batch = []
-            try:
-                while len(batch) < self._batch_size:
-                    if batch:
-                        msg = self._queue.get_nowait()
-                    else:
-                        msg = self._queue.get()
-                    if msg is None:
-                        running = False
-                        break
-                    batch.append(msg)
-            except queue.Empty:
-                pass
-            if batch:
-                requests.post(self._url, json=batch, headers=headers)
+        }, self._logs_dir / 'headers.json')
+
+    @property
+    def _batch_filename(self):
+        filename = self._logs_dir / 'logs' / ('%09d' % self._batch_no + '.json')
+        self._batch_no += 1
+        return filename
+
+    def _dump_batch(self):
+        if len(self._batch):
+            fn = str(self._batch_filename)
+            dump_json(self._batch, fn + '_')
+            os.rename(fn + '_', fn)
+            self._batch = []
+            logging.debug(f'dump batch: {fn}')
 
     def close(self):
-        if not self._thread.is_alive():
-            return
-        self._queue.put(None)
-        self._thread.join()
+        self._dump_batch()
 
     def log_scalar(
             self,
             name: str,
             value: Union[int, float],
     ):
-        self._queue.put(dict(
+        self._batch.append(dict(
             name=validate_metric(name, f'invalid metric name: {name}'),
             value=value,
             step=self._counters[name],
         ))
         self._counters[name] += 1
+        if len(self._batch) >= self._batch_size:
+            self._dump_batch()
