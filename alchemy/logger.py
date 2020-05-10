@@ -1,24 +1,24 @@
+from typing import Union
+from collections import Counter
 import logging
 import os
-import uuid
-from collections import Counter
 from pathlib import Path
-from typing import Union
+import uuid
 
 from .sender import Sender
-from .utils import validate, dump_json, validate_metric, BASE_LOGS_DIR
+from .utils import BASE_LOGS_DIR, dump_json, validate, validate_metric
 
 
 class Logger:
     _base_logs_dir = BASE_LOGS_DIR
 
     def __init__(
-            self,
-            token: str,
-            experiment: str,
-            group: str = None,
-            project: str = None,
-            batch_size: int = None,
+        self,
+        token: str,
+        experiment: str,
+        group: str = None,
+        project: str = None,
+        batch_size: int = None,
     ):
         self._token = token
         self._experiment = validate(
@@ -45,12 +45,15 @@ class Logger:
         dump_json({"pid": os.getpid()}, self._logs_dir / "pid.json")
 
     def _dump_headers(self):
-        dump_json({
-            "X-Token": self._token,
-            "X-Project": self._project,
-            "X-Group": self._group,
-            "X-Experiment": self._experiment,
-        }, self._logs_dir / "headers.json")
+        dump_json(
+            {
+                "X-Token": self._token,
+                "X-Project": self._project,
+                "X-Group": self._group,
+                "X-Experiment": self._experiment,
+            },
+            self._logs_dir / "headers.json",
+        )
 
     @property
     def _batch_filename(self):
@@ -70,12 +73,16 @@ class Logger:
     def close(self):
         self._dump_batch()
 
-    def log_scalar(self, name: str, value: Union[int, float]):
-        self._batch.append(dict(
-            name=validate_metric(name, f"invalid metric name: {name}"),
-            value=value,
-            step=self._counters[name],
-        ))
+    def log_scalar(
+        self, name: str, value: Union[int, float], step: int = None,
+    ):
+        self._batch.append(
+            {
+                "name": validate_metric(name, f"invalid metric name: {name}"),
+                "value": value,
+                "step": step or self._counters[name],
+            }
+        )
         self._counters[name] += 1
         if len(self._batch) >= self._batch_size:
             self._dump_batch()

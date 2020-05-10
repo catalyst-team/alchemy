@@ -1,15 +1,15 @@
+from typing import Union
 import logging
-import shutil
-import time
 from multiprocessing import Process
 from pathlib import Path
-from typing import Union
+import shutil
+import time
 
 import daemon
-import requests
 from filelock import FileLock
+import requests
 
-from .utils import load_json, is_alive, API_URL
+from .utils import API_URL, is_alive, load_json
 
 
 class Sender:
@@ -19,20 +19,13 @@ class Sender:
         self._logs_dir: Path = Path(logs_dir).expanduser().absolute()
 
     def run_daemon(self):
-        proc = Process(
-            target=self._run,
-            name="alchemy-sender",
-        )
+        proc = Process(target=self._run, name="alchemy-sender",)
         proc.start()
         proc.join()
 
     def _run(self):
         log = (self._logs_dir / "sender.log").open("w+")
-        with daemon.DaemonContext(
-                detach_process=True,
-                stderr=log,
-                stdout=log
-        ):
+        with daemon.DaemonContext(detach_process=True, stderr=log, stdout=log):
             self.run()
 
     def run(self):

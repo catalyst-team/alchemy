@@ -1,7 +1,7 @@
+from typing import Union
 import argparse
 import logging
 from pathlib import Path
-from typing import Union
 
 from .sender import Sender
 from .utils import BASE_LOGS_DIR

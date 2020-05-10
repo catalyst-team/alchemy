@@ -1,9 +1,9 @@
+from typing import Any, Union
 import json
 import os
+from pathlib import Path
 import re
 import unicodedata
-from pathlib import Path
-from typing import Union, Any
 
 API_URL = "https://log.alchemy.host"
 BASE_LOGS_DIR = "~/.alchemy/logs"
