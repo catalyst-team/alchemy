@@ -10,6 +10,10 @@ from .utils import BASE_LOGS_DIR, dump_json, validate, validate_metric
 
 
 class Logger:
+    """
+    Logging experiments data to disk.
+    """
+
     _base_logs_dir = BASE_LOGS_DIR
 
     def __init__(
@@ -20,6 +24,15 @@ class Logger:
         project: str = None,
         batch_size: int = None,
     ):
+        """
+        Args:
+            token: corresponds for specific workspace, get it in your
+                   profile (web ui). Required.
+            experiment: name of experiment. Required.
+            group: name of group. Default is 'default'.
+            project: name of project. Default is 'default'.
+            batch_size: size of batch to send. Default is 1000.
+        """
         self._token = token
         self._experiment = validate(
             experiment, f"invalid experiment name: {experiment}"
@@ -64,18 +77,31 @@ class Logger:
 
     def _dump_batch(self):
         if self._batch:
-            fn = str(self._batch_filename)
-            dump_json(self._batch, fn + "_")
-            os.rename(fn + "_", fn)
+            dump_json(self._batch, self._batch_filename)
             self._batch = []
-            logging.debug(f"dump batch: {fn}")
+            logging.debug(f"dump batch: {self._batch_filename}")
 
     def close(self):
+        """
+        This method flushes last batch to the disk.
+
+        Returns: None
+        """
         self._dump_batch()
 
     def log_scalar(
         self, name: str, value: Union[int, float], step: int = None,
     ):
+        """
+        Log some scalar metric.
+
+        Args:
+            name: metric name. Required.
+            value: metric value. Required.
+            step: Default is None (autoincrement starting from 1).
+
+        Returns: None
+        """
         self._batch.append(
             {
                 "name": validate_metric(name, f"invalid metric name: {name}"),

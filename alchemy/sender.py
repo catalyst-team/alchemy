@@ -13,12 +13,25 @@ from .utils import API_URL, is_alive, load_json
 
 
 class Sender:
+    """
+    Send logs to alchemy backend.
+    """
+
     _url = API_URL
 
     def __init__(self, logs_dir: Union[Path, str]):
+        """
+        Args:
+            logs_dir: directory with experiment logs
+        """
         self._logs_dir: Path = Path(logs_dir).expanduser().absolute()
 
     def run_daemon(self):
+        """
+        Send logs to alchemy backend (daemon mode).
+
+        Returns: None
+        """
         proc = Process(target=self._run, name="alchemy-sender",)
         proc.start()
         proc.join()
@@ -29,6 +42,11 @@ class Sender:
             self.run()
 
     def run(self):
+        """
+        Send logs to alchemy backend.
+
+        Returns: None
+        """
         lock_filename = self._logs_dir / ".lock"
         lock = FileLock(lock_filename, timeout=10)
         with lock:
