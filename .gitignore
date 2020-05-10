@@ -122,6 +122,7 @@ examples/data/
 !examples/_tests_distilbert_text_classification/input/*.csv
 examples/logs/
 notebooks/
+presets/
 
 _nogit*
 
@@ -137,3 +138,5 @@ _nogit*
 .history
 
 # End of https://www.gitignore.io/api/visualstudiocode
+
+
