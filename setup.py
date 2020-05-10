@@ -21,18 +21,18 @@ REQUIRES_PYTHON = ">=3.5.0"
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 
-def load_requirements(filename):
+def load_requirements(filename):  # noqa: D103
     with open(os.path.join(PROJECT_ROOT, filename), "r") as f:
         return f.read().splitlines()
 
 
-def load_readme():
+def load_readme():  # noqa: D103
     readme_path = os.path.join(PROJECT_ROOT, "README.md")
     with open(readme_path) as f:
         return "\n" + f.read()
 
 
-def load_version():
+def load_version():  # noqa: D103
     context = {}
     with open(os.path.join(PROJECT_ROOT, "alchemy", "__version__.py")) as f:
         exec(f.read(), context)
@@ -50,13 +50,13 @@ class UploadCommand(Command):
         """Prints things in bold."""
         print("\033[1m{0}\033[0m".format(s))
 
-    def initialize_options(self):
+    def initialize_options(self):  # noqa: D102
         pass
 
-    def finalize_options(self):
+    def finalize_options(self):  # noqa: D102
         pass
 
-    def run(self):
+    def run(self):  # noqa: D102
         try:
             self.status("Removing previous builds…")
             rmtree(os.path.join(PROJECT_ROOT, "dist"))

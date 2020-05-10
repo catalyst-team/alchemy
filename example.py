@@ -1,6 +1,9 @@
+import logging
 import random
 
 from alchemy import Logger
+
+logging.basicConfig(level=logging.DEBUG)
 
 # insert your personal token here
 token = "..."
