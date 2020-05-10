@@ -28,7 +28,8 @@ class Logger:
         self._group = validate(group, f"invalid group name: {group}")
         project = project or "default"
         self._project = validate(project, f"invalid project name: {project}")
-        self._logs_dir: Path = Path(self._base_logs_dir).expanduser().absolute() / str(uuid.uuid4())
+        base_logs_dir = Path(self._base_logs_dir).expanduser().absolute()
+        self._logs_dir: Path = base_logs_dir / str(uuid.uuid4())
         self._batch_size = max(int(batch_size or int(1e3)), 1)
         self._counters = Counter()
         self._batch = []
@@ -53,7 +54,8 @@ class Logger:
 
     @property
     def _batch_filename(self):
-        filename = self._logs_dir / "logs" / ("%09d" % self._batch_no + ".json")
+        filename = "%09d" % self._batch_no + ".json"
+        filename = self._logs_dir / "logs" / filename
         self._batch_no += 1
         return filename
 
