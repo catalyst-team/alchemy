@@ -1,6 +1,6 @@
 <div align="center">
 
-![Alchemy logo](https://raw.githubusercontent.com/catalyst-team/catalyst-pics/master/pics/alchemy_logo.png)
+![Alchemy logo](https://raw.githubusercontent.com/catalyst-team/catalyst-pics/master/Catalyst.Ecosystem/PNG/alchemy-logo.png)
 
 **Experiments logging & visualization**
 
